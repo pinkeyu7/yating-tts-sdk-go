@@ -60,7 +60,7 @@ func (c *YatingClient) Synthesize(text, inputType, model, encoding, sampleRate, 
 			return err
 		}
 
-		return fmt.Errorf("%s", strings.Join(res.Reason, ","))
+		return fmt.Errorf("%s", strings.Join(res.Message, ","))
 	} else {
 		res := SynthesizeResponseDto{}
 		err = json.Unmarshal(buf.Bytes(), &res)

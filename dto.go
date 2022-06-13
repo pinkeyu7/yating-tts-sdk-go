@@ -27,6 +27,6 @@ type SynthesizeResponseDto struct {
 
 type SynthesizeErrorDto struct {
 	Error      string   `json:"error"`
-	Reason     []string `json:"reason"`
+	Message    []string `json:"message"`
 	StatusCode int      `json:"statusCode"`
 }
