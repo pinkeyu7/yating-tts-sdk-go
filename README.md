@@ -13,7 +13,7 @@
         "type": "text"
     },
     "voice": {
-        "model": "zh_en_standard_female_1"
+        "model": "zh_en_female_1"
     },
     "audioConfig": {
         "encoding": "LINEAR16",
@@ -35,9 +35,9 @@
 
 | Name                    | Sample Rate | Description                       |
 | ----------------------- | ----------- | --------------------------------- |
-| zh_en_standard_female_1 | 16k         | Yating speak Mandarin and English |
-| zh_en_standard_female_2 | 16k         | Yiru speak Mandarin and English   |
-| zh_en_standard_male_1   | 16k         | Jarvis speak Mandarin and English |
+| zh_en_female_1 | 16k         | Yating speak Mandarin and English |
+| zh_en_female_2 | 16k         | Yiru speak Mandarin and English   |
+| zh_en_male_1   | 16k         | Jarvis speak Mandarin and English |
 
 ### Encoding Format
 
