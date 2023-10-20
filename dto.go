@@ -6,7 +6,10 @@ type Input struct {
 }
 
 type Voice struct {
-	Model string `json:"model"`
+	Model  string  `json:"model"`
+	Speed  float64 `json:"speed"`
+	Pitch  float64 `json:"pitch"`
+	Energy float64 `json:"energy"`
 }
 
 type AudioConfig struct {

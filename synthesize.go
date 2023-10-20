@@ -19,8 +19,8 @@ func NewClient(url string, key string) *YatingClient {
 	return &YatingClient{Url: url, Key: key}
 }
 
-func (c *YatingClient) Synthesize(text, inputType, model, encoding, sampleRate, fileName string) error {
-	dto := generator(text, inputType, model, encoding, sampleRate)
+func (c *YatingClient) Synthesize(text, inputType, model, encoding, sampleRate string, speed, pitch, energy float64, fileName string) error {
+	dto := generator(text, inputType, model, encoding, sampleRate, speed, pitch, energy)
 
 	err := c.validate(dto)
 	if err != nil {
