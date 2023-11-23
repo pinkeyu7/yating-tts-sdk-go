@@ -4,6 +4,7 @@ const (
 	ModelZhEnFemale1 = "zh_en_female_1"
 	ModelZhEnFemale2 = "zh_en_female_2"
 	ModelZhEnMale1   = "zh_en_male_1"
+	ModelZhEnMale2   = "zh_en_male_2"
 
 	ModelTaiFemale1 = "tai_female_1"
 	ModelTaiFemale2 = "tai_female_2"
@@ -19,13 +20,14 @@ const (
 	SampleRate22k = "22K"
 )
 
-var Model = []string{ModelZhEnFemale1, ModelZhEnFemale2, ModelZhEnMale1, ModelTaiFemale1, ModelTaiFemale2, ModelTaiMale1}
+var Model = []string{ModelZhEnFemale1, ModelZhEnFemale2, ModelZhEnMale1, ModelZhEnMale2, ModelTaiFemale1, ModelTaiFemale2, ModelTaiMale1}
 var Type = []string{TypeText, TypeSsml}
 var Encoding = []string{EncodingMp3, EncodingLinear16}
 var SampleRateMapping = map[string][]string{
 	ModelZhEnFemale1: {SampleRate16k, SampleRate22k},
 	ModelZhEnFemale2: {SampleRate16k, SampleRate22k},
 	ModelZhEnMale1:   {SampleRate16k, SampleRate22k},
+	ModelZhEnMale2:   {SampleRate22k},
 	ModelTaiFemale1:  {SampleRate16k},
 	ModelTaiFemale2:  {SampleRate16k},
 	ModelTaiMale1:    {SampleRate16k},
