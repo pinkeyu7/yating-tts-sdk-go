@@ -28,7 +28,7 @@ var SampleRateMapping = map[string][]string{
 	ModelZhEnFemale2: {SampleRate16k, SampleRate22k},
 	ModelZhEnMale1:   {SampleRate16k, SampleRate22k},
 	ModelZhEnMale2:   {SampleRate22k},
-	ModelTaiFemale1:  {SampleRate16k},
-	ModelTaiFemale2:  {SampleRate16k},
-	ModelTaiMale1:    {SampleRate16k},
+	ModelTaiFemale1:  {SampleRate16k, SampleRate22k},
+	ModelTaiFemale2:  {SampleRate16k, SampleRate22k},
+	ModelTaiMale1:    {SampleRate16k, SampleRate22k},
 }
