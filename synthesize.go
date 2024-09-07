@@ -1,7 +1,8 @@
-package YatingTtsSdk
+package yatingttssdk
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -11,30 +12,36 @@ import (
 )
 
 type YatingClient struct {
-	Url string
+	URL string
 	Key string
 }
 
 func NewClient(url string, key string) *YatingClient {
-	return &YatingClient{Url: url, Key: key}
+	return &YatingClient{
+		URL: url,
+		Key: key,
+	}
 }
 
-func (c *YatingClient) Synthesize(text, inputType, model, encoding, sampleRate string, speed, pitch, energy float64, fileName string) error {
-	dto := generator(text, inputType, model, encoding, sampleRate, speed, pitch, energy)
-
-	err := c.validate(dto)
+func (c *YatingClient) Synthesize(req *SynthesizeRequest) (*SynthesizeResponse, error) {
+	// validation
+	err := c.validate(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	// generate post body
+	dto := generator(req)
 	payload, err := json.Marshal(dto)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	request, err := http.NewRequest(http.MethodPost, c.Url, bytes.NewBuffer(payload))
+	// send request
+	ctx := context.Background()
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, c.URL, bytes.NewBuffer(payload))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	request.Header.Set("Content-Type", "application/json")
@@ -43,54 +50,64 @@ func (c *YatingClient) Synthesize(text, inputType, model, encoding, sampleRate s
 	client := &http.Client{}
 	response, err := client.Do(request)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer response.Body.Close()
+	defer func() {
+		_ = response.Body.Close()
+	}()
 
+	// handle response
 	buf := new(bytes.Buffer)
 	_, err = buf.ReadFrom(response.Body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusCreated {
-		res := SynthesizeErrorDto{}
+		res := synthesizeErrorDto{}
 		err = json.Unmarshal(buf.Bytes(), &res)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		return fmt.Errorf("%s", strings.Join(res.Message, ","))
+		return nil, fmt.Errorf("%s", strings.Join(res.Message, ","))
 	} else {
-		res := SynthesizeResponseDto{}
+		res := synthesizeResponseDto{}
 		err = json.Unmarshal(buf.Bytes(), &res)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		data, err := base64.StdEncoding.DecodeString(res.AudioContent)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		switch dto.AudioConfig.Encoding {
+		fileName := req.FileName
+
+		switch req.Encoding {
 		case EncodingMp3:
 			fileName = fmt.Sprintf("%s.mp3", fileName)
-		default:
+		case EncodingLinear16:
 			fileName = fmt.Sprintf("%s.wav", fileName)
 		}
 
 		file, err := os.Create(fileName)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		defer file.Close()
+		defer func() {
+			_ = file.Close()
+		}()
 
 		_, err = file.Write(data)
 		if err != nil {
-			return err
+			return nil, err
 		}
-	}
 
-	return nil
+		return &SynthesizeResponse{
+			FileName: fileName,
+			Encoding: req.Encoding,
+		}, nil
+	}
 }

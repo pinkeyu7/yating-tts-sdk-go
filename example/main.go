@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	ttsClient "github.com/pinkeyu7/yating-tts-sdk-go"
 )
 
@@ -8,19 +10,23 @@ func main() {
 	url := "TTS_ENDPOINT"
 	key := "PUT_YOUR_API_KEY_HERE"
 
-	text := "歡迎使用雅婷逐字稿。"
-	inputType := ttsClient.TypeText
-	model := ttsClient.ModelZhEnFemale1
-	encoding := ttsClient.EncodingLinear16
-	sampleRate := ttsClient.SampleRate16k
-	speed := 1.0
-	pitch := 1.0
-	energy := 1.0
-	fileName := "example"
+	req := &ttsClient.SynthesizeRequest{
+		Text:       "歡迎使用雅婷逐字稿。",
+		InputType:  ttsClient.InputTypeText,
+		Model:      ttsClient.ModelZhEnFemale2,
+		Encoding:   ttsClient.EncodingLinear16,
+		SampleRate: ttsClient.SampleRate22k,
+		Speed:      1.0,
+		Pitch:      1.0,
+		Energy:     1.0,
+		FileName:   "example",
+	}
 
 	client := ttsClient.NewClient(url, key)
-	err := client.Synthesize(text, inputType, model, encoding, sampleRate, speed, pitch, energy, fileName)
+	res, err := client.Synthesize(req)
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("Synthesize response: %+v\n", res)
 }
