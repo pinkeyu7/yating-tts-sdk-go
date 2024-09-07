@@ -19,7 +19,7 @@ func main() {
 		Speed:      1.0,
 		Pitch:      1.0,
 		Energy:     1.0,
-		FileName:   "example",
+		FileName:   "example/example_audio",
 	}
 
 	client := ttsClient.NewClient(url, key)
